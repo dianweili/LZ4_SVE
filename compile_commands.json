@@ -1,0 +1,32 @@
+[
+    {
+        "directory": "E:/Project1/lz4/lz4/programs",
+        "command": "gcc -I../lib -DXXH_NAMESPACE=LZ4_ -Wall -Wextra -O3 -c lz4io.c -o lz4io.o",
+        "file": "E:/Project1/lz4/lz4/programs/lz4io.c"
+    },
+    {
+        "directory": "E:/Project1/lz4/lz4/programs", 
+        "command": "gcc -I../lib -DXXH_NAMESPACE=LZ4_ -Wall -Wextra -O3 -c lz4cli.c -o lz4cli.o",
+        "file": "E:/Project1/lz4/lz4/programs/lz4cli.c"
+    },
+    {
+        "directory": "E:/Project1/lz4/lz4/lib",
+        "command": "gcc -Wall -Wextra -O3 -c lz4.c -o lz4.o", 
+        "file": "E:/Project1/lz4/lz4/lib/lz4.c"
+    },
+    {
+        "directory": "E:/Project1/lz4/lz4/lib",
+        "command": "gcc -Wall -Wextra -O3 -c lz4frame.c -o lz4frame.o",
+        "file": "E:/Project1/lz4/lz4/lib/lz4frame.c"
+    },
+    {
+        "directory": "E:/Project1/lz4/lz4/lib", 
+        "command": "gcc -Wall -Wextra -O3 -c lz4hc.c -o lz4hc.o",
+        "file": "E:/Project1/lz4/lz4/lib/lz4hc.c"
+    },
+    {
+        "directory": "E:/Project1/lz4/lz4/lib",
+        "command": "gcc -Wall -Wextra -O3 -c xxhash.c -o xxhash.o",
+        "file": "E:/Project1/lz4/lz4/lib/xxhash.c"
+    }
+]

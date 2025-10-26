@@ -1,0 +1,40 @@
+# Multi-stage build for LZ4 with SVE2 optimization on ARM64
+FROM arm64v8/ubuntu:22.04 AS builder
+
+# 安装构建工具
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    gcc \
+    g++ \
+    make \
+    wget \
+    git \
+    bc \
+    && rm -rf /var/lib/apt/lists/*
+
+# 设置工作目录
+WORKDIR /lz4
+
+# 复制源码
+COPY . .
+
+# 编译 LZ4（启用 SVE2）
+RUN make clean && \
+    make CFLAGS="-march=armv9-a+sve2 -O3 -DHAVE_SVE2" -j$(nproc)
+
+# 验证编译
+RUN ./lz4 -V && \
+    echo "Compilation successful!"
+
+# 运行测试
+FROM arm64v8/ubuntu:22.04 AS tester
+
+# 复制二进制文件
+COPY --from=builder /lz4/programs/lz4 /usr/local/bin/lz4
+
+# 验证功能
+RUN echo "Hello World from SVE2!" | lz4 | lz4 -d && \
+    echo "✓ Round-trip test passed"
+
+# 保留 shell 用于调试
+CMD ["/bin/bash"]

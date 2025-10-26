@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  lz4-arm64-test:
+    platform: linux/arm64
+    build:
+      context: .
+      dockerfile: Dockerfile.arm64
+    image: lz4-sve2:arm64
+    container_name: lz4-arm64-test
+    command: /bin/bash -c "
+      echo '=== LZ4 SVE2 Test Environment ===' &&
+      echo 'Architecture:' && uname -m &&
+      echo 'CPU Info:' && cat /proc/cpuinfo | grep -E 'processor|model name' | head -4 &&
+      echo '' &&
+      echo 'Building LZ4...' &&
+      make CFLAGS='-march=armv9-a+sve2 -O3' -j$(nproc) &&
+      echo '' &&
+      echo 'Running tests...' &&
+      lz4 -V &&
+      echo 'Hello World' | lz4 | lz4 -d &&
+      echo '' &&
+      echo '✓ All tests passed!'
+    "
+    volumes:
+      - .:/work
+      - ./test_results:/results
+    working_dir: /work
+
+  lz4-benchmark:
+    platform: linux/arm64
+    build:
+      context: .
+      dockerfile: Dockerfile.arm64
+    image: lz4-sve2:arm64
+    depends_on:
+      - lz4-arm64-test
+    volumes:
+      - .:/work
+      - ./test_results:/results
+    working_dir: /work
+    command: /bin/bash benchmark_sve2.sh
